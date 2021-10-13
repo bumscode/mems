@@ -1,0 +1,32 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+.filepond--credits {
+    display: none;
+}
+
+div .filepond--drip {
+    @apply bg-gray-900 opacity-100 relative
+}
+
+div .filepond--drop-label {
+    @apply text-white;
+}
+
+div .filepond--panel-root {
+    @apply bg-gray-900 border border-pink-500
+}
+
+.neonText {
+    color: #fff;
+    text-shadow:
+        0 0 1px #fff,
+        0 0 3px #fff,
+        0 0 5px #fff,
+        0 0 12px #0fa,
+        0 0 42px #0fa,
+        0 0 52px #0fa,
+        0 0 62px #0fa,
+        0 0 101px #f0a;
+}
