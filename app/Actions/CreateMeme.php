@@ -15,7 +15,7 @@ class CreateMeme
             'title' => 'required|max:255',
             'description' => 'required',
             'id' => 'required|uuid',
-            'name' => 'required',
+            'filename' => 'required',
         ])->validateWithBag('createMeme');
 
         $tempMemeId = $input['id'];
@@ -30,7 +30,7 @@ class CreateMeme
 
         if($tempMeme) {
             $meme
-                ->addMedia(storage_path('app/memes/tmp/' . $tempMemeId . '/' . $input['name']))
+                ->addMedia(storage_path('app/memes/tmp/' . $tempMemeId . '/' . $input['filename']))
                 ->toMediaCollection('images');
         }
     }
