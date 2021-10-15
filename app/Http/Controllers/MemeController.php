@@ -4,17 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Actions\CreateMeme;
 use App\Models\Meme;
+use App\Http\Resources\Meme as MemeResource;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class MemeController extends Controller
 {
     private CreateMeme $createMeme;
 
-    public function __construct(CreateMeme $createMeme)
+    public function __construct(private CreateMeme $memeService)
     {
-        $this->createMeme = $createMeme;
         $this->authorizeResource(Meme::class);
     }
 
@@ -22,20 +21,8 @@ class MemeController extends Controller
     {
         $memes = $request->user()->currentTeam->memes()->orderBy('id', 'desc')->get();
 
-        $user = Auth::user();
-        ray($user);
-
-        $mappedMemes = $memes->map(fn (Meme $meme) => [
-            'id' => $meme->id,
-            'title' => $meme->title,
-            'description' => $meme->description,
-            'created_at' => $meme->created_at,
-            'image' => $meme->getFirstMedia('images')->toHtml(),
-            'imageUrl' => $meme->getFirstMediaUrl('images')
-        ]);
-
         return Inertia::render('Meme/Index', [
-            'memes' => $mappedMemes
+            'memes' => MemeResource::collection($memes)
         ]);
     }
 
@@ -49,7 +36,7 @@ class MemeController extends Controller
 
     public function store(Request $request)
     {
-        $this->createMeme->create($request->user(), $request->all());
+        $this->memeService->create($request->user(), $request->all());
 
         return redirect('/memes');
     }
