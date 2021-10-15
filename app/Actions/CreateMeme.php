@@ -12,17 +12,17 @@ class CreateMeme
     public function create($user, array $input)
     {
         Validator::make($input, [
-            'meme.title' => 'required|max:255',
-            'meme.description' => 'required',
-            'meme.id' => 'required|uuid',
-            'meme.name' => 'required',
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'id' => 'required|uuid',
+            'name' => 'required',
         ])->validateWithBag('createMeme');
 
-        $tempMemeId = $input['meme']['id'];
+        $tempMemeId = $input['id'];
 
         $meme = $user->currentTeam->memes()->create([
-            'title' => $input['meme']['title'],
-            'description' => $input['meme']['description'],
+            'title' => $input['title'],
+            'description' => $input['description'],
             'user_id' => $user->id
         ]);
 
@@ -30,7 +30,7 @@ class CreateMeme
 
         if($tempMeme) {
             $meme
-                ->addMedia(storage_path('app/memes/tmp/' . $tempMemeId . '/' . $input['meme']['name']))
+                ->addMedia(storage_path('app/memes/tmp/' . $tempMemeId . '/' . $input['name']))
                 ->toMediaCollection('images');
         }
     }

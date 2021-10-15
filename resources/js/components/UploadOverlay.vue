@@ -1,42 +1,14 @@
 <template>
     <div class="fixed inset-0 overflow-hidden" role="dialog" aria-modal="true" v-if="showingUploadForm">
         <div class="absolute inset-0 overflow-hidden">
-            <!--
-              Background overlay, show/hide based on slide-over state.
 
-              Entering: "ease-in-out duration-500"
-                From: "opacity-0"
-                To: "opacity-100"
-              Leaving: "ease-in-out duration-500"
-                From: "opacity-100"
-                To: "opacity-0"
-            -->
             <transition name="fade" appear>
                 <div class="absolute inset-0 bg-gray-800 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
             </transition>
             <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex">
                 <transition name="slide" appear>
-                    <!--
-                      Slide-over panel, show/hide based on slide-over state.
-
-                      Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-                        From: "translate-x-full"
-                        To: "translate-x-0"
-                      Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-                        From: "translate-x-0"
-                        To: "translate-x-full"
-                    -->
                     <div class="relative w-96" v-if="showingUploadForm">
-                        <!--
-                          Close button, show/hide based on slide-over state.
 
-                          Entering: "ease-in-out duration-500"
-                            From: "opacity-0"
-                            To: "opacity-100"
-                          Leaving: "ease-in-out duration-500"
-                            From: "opacity-100"
-                            To: "opacity-0"
-                        -->
                         <div class="absolute top-0 left-0 -ml-8 pt-4 pr-2 flex sm:-ml-10 sm:pr-4">
                             <button type="button"
                                     class="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
@@ -62,7 +34,7 @@
                                                 type="text"
                                                 name="memetitle"
                                                 id="memetitle"
-                                                v-model="meme.title"
+                                                v-model="form.title"
                                                 class="relative bg-gray-900 shadow-sm focus:ring-pink-500 focus:border-pink-500 block w-full sm:text-sm border-gray-800 rounded-md text-white border border-pink-500"
                                                 placeholder="Gib deinem Kunstwerk einen Namen.">
                                     </div>
@@ -74,7 +46,7 @@
                                         <textarea
                                             name="memedescription"
                                             id="memedescription"
-                                            v-model="meme.description"
+                                            v-model="form.description"
                                             rows="6"
                                             class="py-3 px-4 relative block w-full shadow-sm bg-gray-900 focus:ring-pink-500 focus:border-pink-500 sm:text-sm border border-gray-800 rounded-md text-white border border-pink-500"
                                             placeholder="Erzaehl uns etwas ueber dein Kunstwerk. Und hoert mir nur auf damit staendig den Titel hier reinzukopieren 🤬!!!1"></textarea>
@@ -93,12 +65,12 @@
                                             @processfile="_handleFilePondProcessfile"
                                         />
                                     </div>
-                                    <div class="mt-4 flex items-start justify-between" v-if="meme.id !== null">
+                                    <div class="mt-4 flex items-start justify-between" v-if="form.id !== null">
                                         <div>
                                             <h2 class="font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-yellow-600"><span class="sr-only">Details for </span>
-                                                {{meme.name }}
+                                                {{form.filename }}
                                             </h2>
-                                            <p class="text-sm font-medium text-gray-500">{{ meme.size }}</p>
+                                            <p class="text-sm font-medium text-gray-500">{{ form.size }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -124,19 +96,9 @@
 
 <script>
 import {defineComponent} from 'vue'
-// Import Vue FilePond
 import vueFilePond from "vue-filepond";
-
-// Import FilePond styles
 import "filepond/dist/filepond.min.css";
-
-// Import FilePond plugins
-// Please note that you need to install these plugins separately
-
-// Import image preview plugin styles
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
-
-// Import image preview and file type validation plugins
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 
@@ -153,11 +115,13 @@ export default defineComponent({
     props: ['showingUploadForm'],
     data() {
         return {
-            meme: {
+            form: this.$inertia.form({
                 id: null,
-                name: null,
-                size: null
-            },
+                filename: null,
+                size: null,
+                title: null,
+                description: null
+            }),
             server: {
                 process: {
                     url: '/temp-meme',
@@ -178,19 +142,17 @@ export default defineComponent({
     },
     methods: {
         submitMeme() {
-            this.$inertia.post('/memes', {
-                meme: {
-                    title: this.meme.title,
-                    description: this.meme.description,
-                    id: this.meme.id,
-                    name: this.meme.name
+            this.form.post('/memes', {
+                onSuccess: () => {
+                    this.$emit('close')
+                    this.form.reset('id', 'title', 'description', 'filename', 'size')
                 }
             })
         },
         _handleFilePondProcessfile(error, file) {
-            this.meme.id = file.serverId
-            this.meme.name = file.filename
-            this.meme.size = this.humanFileSize(file.fileSize)
+            this.form.id = file.serverId
+            this.form.filename = file.filename
+            this.form.size = this.humanFileSize(file.fileSize)
 
             this.$nextTick()
         },
