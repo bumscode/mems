@@ -4,7 +4,6 @@ namespace App\Actions;
 
 use App\Models\TempMeme;
 use Illuminate\Support\Facades\Validator;
-use Spatie\MediaLibrary\MediaCollections\File;
 
 
 class CreateMeme
