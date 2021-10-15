@@ -7,8 +7,8 @@
         <div class="min-h-screen bg-gray-900">
             <nav class="bg-pink-800 border-b border-gray-900 relative">
 
-                <!-- Primary Navigation Menu -->
-                <div class="absolute -inset-0.5 bg-gradient-to-r from-pink-700 to-purple-900 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-100 group-hover:duration-200 animate-tilt"></div>
+                <!-- Primary Navigation Menu
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-pink-700 to-purple-900 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-100 group-hover:duration-200 animate-tilt"></div>-->
 
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                     <div class="flex justify-between h-16">
