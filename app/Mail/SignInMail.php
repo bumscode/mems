@@ -3,42 +3,24 @@
 namespace App\Mail;
 
 use App\Models\User;
-use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class SignInMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use SerializesModels;
 
-    /**
-     * @var User
-     */
-    private $user;
-    private $url;
-
-    /**
-     * Create a new message instance.
-     *
-     * @param User $user
-     * @param $url
-     */
-    public function __construct(User $user, $url)
-    {
-        $this->user = $user;
-        $this->url = $url;
+    public function __construct(
+        private string $email,
+        private string $url
+    ) {
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
         return $this->markdown('mail.signin')
             ->from('noway@mems.wtf', "noway@mems.wtf")
-            ->to($this->user->email)
+            ->to($this->email)
             ->with(['url' => $this->url]);
     }
 }

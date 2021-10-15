@@ -1,11 +1,4 @@
-@component('mail::layout')
-    @slot('header')
-        @component('mail::header', ['url' => config('app.url')])
-            {{ config('app.name') }}
-        @endcomponent
-    @endslot
-
-
+@component('mail::message')
     @component('mail::button', ['url' => $url])
         Klick hier um dich anzumelden ✨
     @endcomponent
