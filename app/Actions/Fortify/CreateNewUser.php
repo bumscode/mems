@@ -25,6 +25,10 @@ class CreateNewUser
 
     public function create(Request $request)
     {
+        /*
+         * TODO should only go through this journey if the email is not whitelisted in DB
+         * aka emails that are pending are whitelisted and are no longer pending
+         */
         $validated = Validator::make($request->all(), [
             //'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
             'email' => ['required', 'string', 'email', 'max:255', 'ends_with:'.config('meme.allowed_domains')],
@@ -73,7 +77,9 @@ class CreateNewUser
                 'email' => $email,
                 'whitelisted' => $isWhitelisted
             ]), function (User $user) {
-                $this->joinTeam($user);
+                if (is_null($user->current_team_id)) {
+                    $this->joinTeam($user);
+                }
             });
         });
     }
