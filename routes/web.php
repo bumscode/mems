@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MemeController;
+use App\Http\Controllers\SignedMediaController;
 use App\Http\Controllers\TempMemeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -8,6 +9,9 @@ use Inertia\Inertia;
 Route::middleware('guest')->get('/', fn () => Inertia::render('Welcome'))->name('home');
 Route::get('/mail-sent', fn ()  => Inertia::render('Auth/MailSent'))->name('mail-sent');
 Route::get('/pending-verification', fn () => Inertia::render('Auth/PendingVerification'))->name('pending-verification');
+
+Route::middleware(['signed', 'auth:sanctum'])->get('/media/{media}/{conversion?}', SignedMediaController::class)->name('media');
+
 
 Route::middleware(['auth:sanctum', 'verified', 'lastSeen'])->group(function () {
     Route::resources(['memes' => MemeController::class]);
