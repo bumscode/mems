@@ -5,7 +5,7 @@ use App\Http\Controllers\TempMemeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', fn () => Inertia::render('Welcome'))->name('home');
+Route::middleware('guest')->get('/', fn () => Inertia::render('Welcome'))->name('home');
 Route::get('/mail-sent', fn ()  => Inertia::render('Auth/MailSent'))->name('mail-sent');
 Route::get('/pending-verification', fn () => Inertia::render('Auth/PendingVerification'))->name('pending-verification');
 
