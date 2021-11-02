@@ -16,6 +16,7 @@ class CreateTempMemesTable extends Migration
         Schema::create('temp_memes', function (Blueprint $table) {
             $table->id();
             $table->uuid('folder');
+            $table->foreignId('user_id')->constrained();
             $table->string('filename');
             $table->timestamps();
         });

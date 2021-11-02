@@ -40,7 +40,12 @@
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <button @click="showingUploadForm = !showingUploadForm">NEW</button>
+                                <button @click="showingUploadForm = !showingUploadForm">
+                                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 5.75V18.25"></path>
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.25 12L5.75 12"></path>
+                                    </svg>
+                                </button>
                             </div>
 
                             <!-- Settings Dropdown -->

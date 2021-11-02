@@ -9,8 +9,8 @@ class SignedMediaUrlGenerator extends DefaultUrlGenerator
 {
     public function getUrl(): string
     {
-        return URL::signedRoute('media', [
-            'media' => $this->media->id,
+        return URL::temporarySignedRoute('media', now()->addHours(12), [
+            'media' => $this->media->uuid,
             'conversion' => $this->conversion?->getName(),
         ]);
     }

@@ -19,7 +19,7 @@ class Meme extends Model implements HasMedia
 
     public function owner(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function team(): BelongsTo

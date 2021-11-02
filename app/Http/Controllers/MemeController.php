@@ -44,8 +44,7 @@ class MemeController extends Controller
     public function show(Meme $meme)
     {
         return Inertia::render('Meme/Detail', [
-            'meme' => $meme,
-            'owner' => $meme->load('owner', 'team'),
+            'meme' => $meme->load('owner:id,email'),
             'media' => $meme->getFirstMedia('images')->toHtml()
         ]);
     }

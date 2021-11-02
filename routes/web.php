@@ -10,7 +10,7 @@ Route::middleware('guest')->get('/', fn () => Inertia::render('Welcome'))->name(
 Route::get('/mail-sent', fn ()  => Inertia::render('Auth/MailSent'))->name('mail-sent');
 Route::get('/pending-verification', fn () => Inertia::render('Auth/PendingVerification'))->name('pending-verification');
 
-Route::middleware(['signed', 'auth:sanctum'])->get('/media/{media}/{conversion?}', SignedMediaController::class)->name('media');
+Route::middleware(['signed', 'auth:sanctum'])->get('/media/{media:uuid}/{conversion?}', SignedMediaController::class)->name('media');
 
 
 Route::middleware(['auth:sanctum', 'verified', 'lastSeen'])->group(function () {
